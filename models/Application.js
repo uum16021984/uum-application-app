@@ -51,7 +51,3 @@ applicationSchema.set('toJSON', {
 });
 
 module.exports = mongoose.model('Application', applicationSchema);
-  },
-});
-
-module.exports = mongoose.model('Application', applicationSchema);
