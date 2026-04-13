@@ -7,21 +7,10 @@ const applicationSchema = new mongoose.Schema(
     position: { type: String, required: true },
     grade: { type: String, default: '' },
     school: { type: String, default: '' },
-
-    // ✅ FIXED (added enum)
     status: {
       type: String,
-      enum: ['pending', 'approved', 'rejected'],
       default: 'pending',
     },
-
-    // ✅ ADDED (for DS11 / DS13 separation - safe addition)
-    program: {
-      type: String,
-      enum: ['DS11', 'DS13'],
-      default: '',
-    },
-
     dateApplied: { type: String, default: '' },
     details: { type: mongoose.Schema.Types.Mixed, default: {} },
     jobId: { type: mongoose.Schema.Types.ObjectId, ref: 'Job', default: null },
