@@ -326,11 +326,11 @@ async function submitFullApplication(isDraft = false) {
         showToast('Sila isi Nama Penuh terlebih dahulu.', 'error');
         return;
     }
-
-    if (!isDraft && !document.getElementById('declarationCheck')?.checked) {
-        showToast('Sila tick kotak Declaration sebelum submit.', 'error');
-        return;
-    }
+const declaration = document.getElementById("declaration");
+    if (!declaration.checked) {
+    alert("Sila tick kotak Declaration sebelum submit.");
+    return;
+}
 
     const formData = {
         newIC: document.getElementById('newIC')?.value || '',
