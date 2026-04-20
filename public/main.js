@@ -327,9 +327,10 @@ async function submitFullApplication(isDraft = false) {
         return;
     }
 	
-  if (!isDraft && !document.getElementById('declCheck')?.checked) {
-        showToast('Sila tick kotak Declaration sebelum submit.', 'error');
-        return;
+  const checkbox = document.getElementById("declCheck");
+    if (!isDraft && (!checkbox || !checkbox.checked)) {
+    showToast('Sila tick kotak Declaration sebelum submit.', 'error');
+    return;
     }
 
     const formData = {
