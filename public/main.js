@@ -326,11 +326,10 @@ async function submitFullApplication(isDraft = false) {
         showToast('Sila isi Nama Penuh terlebih dahulu.', 'error');
         return;
     }
-	
-  const checkbox = document.getElementById("declCheck");
-    if (!isDraft && (!checkbox || !checkbox.checked)) {
-    showToast('Sila tick kotak Declaration sebelum submit.', 'error');
-    return;
+
+    if (!isDraft && !document.getElementById('declarationCheck')?.checked) {
+        showToast('Sila tick kotak Declaration sebelum submit.', 'error');
+        return;
     }
 
     const formData = {
@@ -1312,30 +1311,8 @@ async function deleteApplication(id) {
 `).join("");
 }
         // Load DS11 Applications
-function loadDS11Applications() {
 
-    const content = document.getElementById("content");
-    content.innerHTML = "";
 
-    const ds11Jobs = jobOpenings.filter(job => job.grade === "DS11");
-
-    ds11Jobs.forEach(job => {
-        content.innerHTML += createJobCard(job);
-    });
-
-}
-function loadDS13Applications() {
-
-    const content = document.getElementById("content");
-    content.innerHTML = "";
-
-    const ds13Jobs = jobOpenings.filter(job => job.grade === "DS13");
-
-    ds13Jobs.forEach(job => {
-        content.innerHTML += createJobCard(job);
-    });
-
-}
         // Load History
         /*function loadHistory() {
             document.getElementById('pageTitle').textContent = 'History';
@@ -2619,3 +2596,54 @@ function downloadAsWord() {
 
 
 /* Jobs are loaded from the API (see refreshAllData). Sample data is seeded on the server if the collection is empty. */
+
+
+// ===== FIXED DS11 =====
+function loadDS11Applications() {
+    const contentArea = document.getElementById("contentArea");
+    if (!contentArea) return;
+
+    const title = document.getElementById('pageTitle');
+    if (title) title.textContent = 'DS11 Applications';
+
+    const ds11Apps = applications.filter(app => app.grade === "DS11");
+
+    if (ds11Apps.length === 0) {
+        contentArea.innerHTML = `<div class="card"><p>No DS11 applications found.</p></div>`;
+        return;
+    }
+
+    contentArea.innerHTML = ds11Apps.map(app => `
+        <div class="card">
+            <h3>${app.position}</h3>
+            <p><strong>Applicant:</strong> ${app.applicantName}</p>
+            <p><strong>Status:</strong> ${app.status}</p>
+            <button onclick="viewApplicationDetail('${app.id}')">View</button>
+        </div>
+    `).join("");
+}
+
+// ===== FIXED DS13 =====
+function loadDS13Applications() {
+    const contentArea = document.getElementById("contentArea");
+    if (!contentArea) return;
+
+    const title = document.getElementById('pageTitle');
+    if (title) title.textContent = 'DS13 Applications';
+
+    const ds13Apps = applications.filter(app => app.grade === "DS13");
+
+    if (ds13Apps.length === 0) {
+        contentArea.innerHTML = `<div class="card"><p>No DS13 applications found.</p></div>`;
+        return;
+    }
+
+    contentArea.innerHTML = ds13Apps.map(app => `
+        <div class="card">
+            <h3>${app.position}</h3>
+            <p><strong>Applicant:</strong> ${app.applicantName}</p>
+            <p><strong>Status:</strong> ${app.status}</p>
+            <button onclick="viewApplicationDetail('${app.id}')">View</button>
+        </div>
+    `).join("");
+}
