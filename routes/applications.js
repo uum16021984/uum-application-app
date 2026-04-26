@@ -34,14 +34,18 @@ router.get('/', async (req, res) => {
 
     if (role === 'calon') {
       query.applicantId = userId;
-    } else if (role === 'adminSchool') {
-      const user = await User.findById(userId).lean();
+ } else if (role === 'adminSchool') {
+  const user = await User.findById(userId).lean();
 
-      // ✅ FIXED (no empty filter)
-      if (user?.school) {
-        query.school = user.school;
-      }
-    }
+  if (user?.school) {
+    // show BOTH correct + old broken data
+    query.$or = [
+      { school: user.school },
+      { school: { $exists: false } },
+      { school: '' }
+    ];
+  }
+}
 
     const apps = await Application.find(query).sort({ createdAt: -1 }).lean();
 
