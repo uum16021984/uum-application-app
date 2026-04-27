@@ -17,7 +17,15 @@ async function api(path, options = {}) {
   const t = getToken();
   if (t) headers['Authorization'] = 'Bearer ' + t;
   const res = await fetch('/api' + path, { ...options, headers });
-  const data = await res.json().catch(() => ({}));
+let data;
+let text = await res.text();
+
+try {
+  data = JSON.parse(text);
+} catch (e) {
+  console.error("❌ Invalid JSON from backend:", text);
+  throw new Error("Server returned invalid response");
+}
   if (!res.ok) {
     const msg = data.error || res.statusText || 'Request failed';
     throw new Error(msg);
