@@ -327,7 +327,8 @@ async function submitFullApplication(isDraft = false) {
         return;
     }
 
-    if (!isDraft && !document.getElementById('declarationCheck')?.checked) {
+    const declaration = document.getElementById('declarationCheck');
+    if (!isDraft && declaration && !declaration.checked) {
         showToast('Sila tick kotak Declaration sebelum submit.', 'error');
         return;
     }
