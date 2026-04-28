@@ -1647,7 +1647,7 @@ async function deleteApplication(id) {
 
         // View application detail
         function viewApplicationDetail(applicationId) {
-            const application = applications.find(a => String(a.id) === String(applicationId));
+            const application = applications.find(a => String(a._id) === String(applicationId));
             currentApplicationId = applicationId;
             
             if (!application) {
@@ -1658,19 +1658,19 @@ async function deleteApplication(id) {
             let actionButtons = '';
             if (currentUser.role === 'adminJSM' && application.status === 'pending') {
                 actionButtons = `
-                    <button onclick="approveApplication(${application.id})" class="btn-primary mr-2">
+                    <button onclick="approveApplication('${application._id}')" class="btn-primary mr-2">
                         <i class="fas fa-check mr-2"></i> Approve
                     </button>
-                    <button onclick="rejectApplication(${application.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+                    <button onclick="rejectApplication('${application._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
                         <i class="fas fa-times mr-2"></i> Reject
                     </button>
                 `;
             } else if (currentUser.role === 'adminSchool' && application.status === 'approved' && !application.schoolApproved) {
                 actionButtons = `
-                    <button onclick="approveApplicationBySchool(${application.id})" class="btn-primary mr-2">
+                   <button onclick="approveApplicationBySchool('${application._id}')" class="btn-primary mr-2">
                         <i class="fas fa-check mr-2"></i> Approve
                     </button>
-                    <button onclick="rejectApplicationBySchool(${application.id})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+                    <button onclick="rejectApplicationBySchool('${application._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
                         <i class="fas fa-times mr-2"></i> Reject
                     </button>
                 `;
