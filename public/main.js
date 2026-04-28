@@ -1646,67 +1646,44 @@ async function deleteApplication(id) {
         }
 
         // View application detail
-        function viewApplicationDetail(applicationId) {
-            const application = applications.find(a => String(a._id) === String(applicationId));
-            currentApplicationId = applicationId;
-            
-            if (!application) {
-                showToast('Application not found', 'error');
-                return;
-            }
-            
-            let actionButtons = '';
-            if (currentUser.role === 'adminJSM' && application.status === 'pending') {
-                actionButtons = `
-                    <button onclick="approveApplication('${application._id}')" class="btn-primary mr-2">
-                        <i class="fas fa-check mr-2"></i> Approve
-                    </button>
-                    <button onclick="rejectApplication('${application._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
-                        <i class="fas fa-times mr-2"></i> Reject
-                    </button>
-                `;
-            } else if (currentUser.role === 'adminSchool' && application.status === 'approved' && !application.schoolApproved) {
-                actionButtons = `
-                   <button onclick="approveApplicationBySchool('${application._id}')" class="btn-primary mr-2">
-                        <i class="fas fa-check mr-2"></i> Approve
-                    </button>
-                    <button onclick="rejectApplicationBySchool('${application._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
-                        <i class="fas fa-times mr-2"></i> Reject
-                    </button>
-                `;
-            }
-            
-            const detailHTML = `
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold primary-text mb-2">Applicant Information</h3>
-                    <p><strong>Name:</strong> ${application.applicantName}</p>
-                    <p><strong>Position Applied:</strong> ${application.position}</p>
-                    <p><strong>Grade:</strong> ${application.grade}</p>
-                    <p><strong>School:</strong> ${application.school}</p>
-                    <p><strong>Date Applied:</strong> ${application.dateApplied}</p>
-                    <p><strong>Status:</strong> <span class="status-badge status-${application.status}">${application.status}</span></p>
-                </div>
-                
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold primary-text mb-2">Application Details</h3>
-                    <p><strong>Highest Qualification:</strong> ${application.qualification}</p>
-                    <p><strong>Years of Experience:</strong> ${application.experience}</p>
-                    <p><strong>Resume:</strong> ${application.resume}</p>
-                    <p><strong>Cover Letter:</strong> ${application.coverLetter}</p>
-                </div>
-                
-                <div class="flex justify-end">
-                    ${actionButtons}
-                    <button onclick="downloadForm(${application.id})" class="ml-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
-                        <i class="fas fa-download mr-2"></i> Download Form
-                    </button>
-                </div>
-            `;
-            
-            document.getElementById('applicationDetailContent').innerHTML = detailHTML;
-            document.getElementById('applicationDetailModal').classList.add('active');
-        }
-
+  function viewApplicationDetail(applicationId) {
+    const application = applications.find(a => String(a._id) === String(applicationId));
+    currentApplicationId = applicationId;
+    
+    if (!application) {
+        showToast('Application not found', 'error');
+        return;
+    }
+    
+    const detailHTML = `
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold primary-text mb-2">Applicant Information</h3>
+            <p><strong>Name:</strong> ${application.applicantName}</p>
+            <p><strong>Position Applied:</strong> ${application.position}</p>
+            <p><strong>Grade:</strong> ${application.grade}</p>
+            <p><strong>School:</strong> ${application.school}</p>
+            <p><strong>Date Applied:</strong> ${application.dateApplied}</p>
+            <p><strong>Status:</strong> <span class="status-badge status-${application.status}">${application.status}</span></p>
+        </div>
+        
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold primary-text mb-2">Application Details</h3>
+            <p><strong>Highest Qualification:</strong> ${application.qualification}</p>
+            <p><strong>Years of Experience:</strong> ${application.experience}</p>
+            <p><strong>Resume:</strong> ${application.resume}</p>
+            <p><strong>Cover Letter:</strong> ${application.coverLetter}</p>
+        </div>
+        
+        <div class="flex justify-end">
+            <button onclick="downloadForm('${application._id}')" class="ml-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                <i class="fas fa-download mr-2"></i> Download Form
+            </button>
+        </div>
+    `;
+    
+    document.getElementById('applicationDetailContent').innerHTML = detailHTML;
+    document.getElementById('applicationDetailModal').classList.add('active');
+}
         // Close application detail modal
         function closeApplicationDetailModal() {
             document.getElementById('applicationDetailModal').classList.remove('active');
