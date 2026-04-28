@@ -1302,7 +1302,7 @@ async function deleteApplication(id) {
     <p><strong>Applicant:</strong> ${app.applicantName}</p>
     <p><strong>Status:</strong> ${app.status}</p>
 
-    <button onclick="viewApplicationDetail(${app.id})"
+    <button onclick="viewApplicationDetail('${app.id}')"
         class="bg-blue-600 text-white px-3 py-1 rounded mr-2">
         <i class="fas fa-eye"></i> View
     </button>
