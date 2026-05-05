@@ -1665,7 +1665,7 @@ async function deleteApplication(id) {
                         <i class="fas fa-times mr-2"></i> Reject
                     </button>
                 `;
-           else if (false) {
+		   }else if (false) {
                 actionButtons = `
                     <button onclick="approveApplicationBySchool('${application._id}')" class="btn-primary mr-2">
                         <i class="fas fa-check mr-2"></i> Approve
