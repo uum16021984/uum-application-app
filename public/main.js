@@ -21,13 +21,7 @@ function openAdminViewForm(appId) {
                     <i class="fas fa-file-word mr-1"></i> Download Word
                 </button>
                 ${app.status === 'pending' ? `
-                <button onclick="adminApprove(${app.id})" style="background:#003087; color:white; border:none; padding:8px 18px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:700;">
-                    <i class="fas fa-check-circle mr-1"></i> Approve
-                </button>
-                <button onclick="adminReject(${app.id})" style="background:#dc3545; color:white; border:none; padding:8px 18px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:700;">
-                    <i class="fas fa-times-circle mr-1"></i> Reject
-                </button>` : `<span style="padding:8px 14px; border-radius:5px; font-size:13px; font-weight:600; background:${app.status==='approved'?'#d4edda':'#f8d7da'}; color:${app.status==='approved'?'#155724':'#721c24'};">${app.status.toUpperCase()}</span>`}
-            </div>
+                
         </div>
 
         <!-- ===== UUM Header ===== -->
@@ -72,12 +66,7 @@ function openAdminViewForm(appId) {
         <!-- Bottom Approve / Reject buttons (repeat for easy access) -->
         ${app.status === 'pending' ? `
         <div style="margin-top:24px; text-align:center; display:flex; justify-content:center; gap:16px; padding:20px; background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-            <button onclick="adminApprove(${app.id})" style="background:#003087; color:white; border:none; padding:12px 36px; border-radius:6px; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 3px 8px rgba(0,48,135,0.3);">
-                <i class="fas fa-check-circle mr-2"></i> Approve (Lulus)
-            </button>
-            <button onclick="adminReject(${app.id})" style="background:#dc3545; color:white; border:none; padding:12px 36px; border-radius:6px; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 3px 8px rgba(220,53,69,0.3);">
-                <i class="fas fa-times-circle mr-2"></i> Reject (Tidak Lulus)
-            </button>
+
         </div>` : ''}
     `;
 }
@@ -1665,7 +1654,7 @@ async function deleteApplication(id) {
                         <i class="fas fa-times mr-2"></i> Reject
                     </button>
                 `;
-		   }else if (false) {
+		   } else if (false) {
                 actionButtons = `
                     <button onclick="approveApplicationBySchool('${application._id}')" class="btn-primary mr-2">
                         <i class="fas fa-check mr-2"></i> Approve
