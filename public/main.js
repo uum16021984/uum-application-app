@@ -62,12 +62,6 @@ function openAdminViewForm(appId) {
             <div style="background:#003087; color:white; padding:6px 12px; margin:-20px -20px 12px -20px; border-radius:8px 8px 0 0; font-size:12px; font-weight:600;">${sec}</div>
             <p style="color:#888; font-size:12px; font-style:italic;">– Data dari borang calon –</p>
         </div>`).join('')}
-
-        <!-- Bottom Approve / Reject buttons (repeat for easy access) -->
-        ${app.status === 'pending' ? `
-        <div style="margin-top:24px; text-align:center; display:flex; justify-content:center; gap:16px; padding:20px; background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-
-        </div>` : ''}
     `;
 }
 
