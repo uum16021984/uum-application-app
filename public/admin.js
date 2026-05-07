@@ -3,7 +3,7 @@ async function adminApprove(appId) {
   try {
     await apiPatchApplication(appId, { status: 'approved' });
     showToast('Permohonan DILULUSKAN!', 'success');
-    openAdminViewForm(appId);
+   loadEvaluatePage();
   } catch (e) {
     showToast(e.message || 'Failed to approve', 'error');
   }
@@ -13,7 +13,7 @@ async function adminReject(appId) {
   try {
     await apiPatchApplication(appId, { status: 'rejected' });
     showToast('Permohonan DITOLAK.', 'info');
-    openAdminViewForm(appId);
+   loadEvaluatePage();
   } catch (e) {
     showToast(e.message || 'Failed to reject', 'error');
   }
