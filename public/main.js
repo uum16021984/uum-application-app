@@ -20,7 +20,7 @@ function openAdminViewForm(appId) {
                 <button onclick="downloadApplicationWord(${app.id})" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">
                     <i class="fas fa-file-word mr-1"></i> Download Word
                 </button>
-                ${app.status === 'pending' ? `
+                
                 
         </div>
 
