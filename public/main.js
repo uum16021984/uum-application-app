@@ -20,9 +20,9 @@ function openAdminViewForm(appId) {
                 <button onclick="downloadApplicationWord(${app.id})" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">
                     <i class="fas fa-file-word mr-1"></i> Download Word
                 </button>
-                
-          
+       ${app.status === 'pending' ? `
 
+</div>
         <!-- ===== UUM Header ===== -->
         <div class="card" style="padding:18px; margin-bottom:0;">
             <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #003087; padding-bottom:12px; margin-bottom:12px;">
@@ -61,7 +61,7 @@ function openAdminViewForm(appId) {
             <div style="background:#003087; color:white; padding:6px 12px; margin:-20px -20px 12px -20px; border-radius:8px 8px 0 0; font-size:12px; font-weight:600;">${sec}</div>
             <p style="color:#888; font-size:12px; font-style:italic;">– Data dari borang calon –</p>
 64: </div>`).join('')}
-65: `;
+65:
 66: }
 
 // adminApprove / adminReject — see admin.js (API)
