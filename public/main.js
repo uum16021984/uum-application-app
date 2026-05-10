@@ -21,7 +21,7 @@ function openAdminViewForm(appId) {
                     <i class="fas fa-file-word mr-1"></i> Download Word
                 </button>
                 
-                
+             ${app.status === 'pending' ? `
         </div>
 
         <!-- ===== UUM Header ===== -->
