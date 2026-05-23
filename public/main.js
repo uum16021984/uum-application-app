@@ -1743,45 +1743,67 @@ async function deleteApplication(id) {
             currentApplicationId = null;
         }
 
-async function adminApprove(appId) {
+window.adminApprove = async function(appId) {
+    alert("[Tracer 1] Click detected! ID passed: " + appId);
     try {
-        // 1. Tell backend database to change the status
+        alert("[Tracer 2] Checking apiPatchApplication existence...");
+        if (typeof apiPatchApplication !== 'function') {
+            alert("[ERROR] apiPatchApplication is NOT defined as a function! Type is: " + typeof apiPatchApplication);
+            return;
+        }
+
+        alert("[Tracer 3] Sending network request to server...");
+        // This is where code usually stalls if Render's network/CORS configuration is blocking it
         await apiPatchApplication(appId, { status: 'approved' });
         
-        // 2. NEW MODEL: Find the item in local memory and force the change manually
-        const index = applications.findIndex(a => String(a.id) === String(appId));
-        if (index !== -1) {
-            applications[index].status = 'approved';
+        alert("[Tracer 4] Server responded successfully! Syncing memory state...");
+        if (typeof refreshAllData === 'function') {
+            await refreshAllData();
+        } else if (typeof applications !== 'undefined') {
+            const idx = applications.findIndex(a => String(a.id) === String(appId));
+            if (idx !== -1) applications[idx].status = 'approved';
         }
-        
-        showToast('Permohonan DILULUSKAN!', 'success');
-        
-        // 3. Redraw the screen instantly
-        loadEvaluatePage();
-    } catch (e) {
-        showToast(e.message || 'Failed to approve', 'error');
-    }
-}
 
-async function adminReject(appId) {
+        alert("[Tracer 5] Triggering UI Redraw via loadEvaluatePage()...");
+        loadEvaluatePage();
+        alert("[Tracer 6] Process Complete!");
+        
+    } catch (e) {
+        // If your showToast utility is crashing, this alert catches the raw server error instead
+        alert("[CRASH CAUGHT] Error Name: " + e.name + " | Message: " + e.message);
+        console.error("Full trace error:", e);
+    }
+};
+
+window.adminReject = async function(appId) {
+    alert("[Tracer 1] Click detected! ID passed: " + appId);
     try {
-        // 1. Tell backend database to change the status
+        alert("[Tracer 2] Checking apiPatchApplication existence...");
+        if (typeof apiPatchApplication !== 'function') {
+            alert("[ERROR] apiPatchApplication is NOT defined as a function!");
+            return;
+        }
+
+        alert("[Tracer 3] Sending network request to server...");
         await apiPatchApplication(appId, { status: 'rejected' });
         
-        // 2. NEW MODEL: Find the item in local memory and force the change manually
-        const index = applications.findIndex(a => String(a.id) === String(appId));
-        if (index !== -1) {
-            applications[index].status = 'rejected';
+        alert("[Tracer 4] Server responded successfully! Syncing memory state...");
+        if (typeof refreshAllData === 'function') {
+            await refreshAllData();
+        } else if (typeof applications !== 'undefined') {
+            const idx = applications.findIndex(a => String(a.id) === String(appId));
+            if (idx !== -1) applications[idx].status = 'rejected';
         }
-        
-        showToast('Permohonan DITOLAK!', 'error');
-        
-        // 3. Redraw the screen instantly
+
+        alert("[Tracer 5] Triggering UI Redraw...");
         loadEvaluatePage();
+        alert("[Tracer 6] Process Complete!");
+        
     } catch (e) {
-        showToast(e.message || 'Failed to reject', 'error');
+        alert("[CRASH CAUGHT] Error Name: " + e.name + " | Message: " + e.message);
+        console.error("Full trace error:", e);
     }
-}
+};
         // Approve application (by Admin School)
         async function approveApplicationBySchool(applicationId) {
             try {
