@@ -75,7 +75,7 @@ function downloadApplicationWord(appId) {
     // For simplicity we create a plain-text .docx-compatible RTF-style approach using Blob.
     // A real .docx needs JSZip + XML. We'll use a simple approach: generate an HTML file that Word can open as .doc
 
-    const htmlContent = '`'
+    const htmlContent = `
     <html><head><meta charset="utf-8"><style>
         body { font-family: Arial, sans-serif; font-size: 11pt; margin: 40px; }
         h1 { text-align:center; color:#003087; font-size:16pt; }
