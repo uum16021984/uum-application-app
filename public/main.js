@@ -9,20 +9,23 @@ function openAdminViewForm(appId) {
     const contentArea = document.getElementById('contentArea');
     const d = app.details || {};
 
-    contentArea.innerHTML = `
-        <!-- Top action bar -->
+  contentArea.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
             <div style="display:flex; align-items:center; gap:10px;">
                 <button onclick="loadEvaluatePage()" style="background:#eee; border:1px solid #ccc; padding:6px 14px; border-radius:5px; cursor:pointer; font-size:13px;"><i class="fas fa-arrow-left mr-1"></i> Back</button>
                 <h2 style="color:#003087; margin:0; font-size:18px;">Full Application Form</h2>
             </div>
-   <div style="display:flex; gap:8px;">
-    <button onclick="downloadApplicationWord(${app.id})" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">
-        <i class="fas fa-file-word mr-1"></i> Download Word
-    </button>
-    ${app.status === 'pending' ? `
-    
-</div>
+            <div style="display:flex; gap:8px;">
+                <button onclick="downloadApplicationWord(${app.id})" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">
+                    <i class="fas fa-file-word mr-1"></i> Download Word
+                </button>
+                ${app.status === 'pending' ? `
+                    <button onclick="approveApplication(${app.id})" class="bg-green-600 text-white px-3 py-1 rounded">Approve</button>
+                    <button onclick="rejectApplication(${app.id})" class="bg-red-600 text-white px-3 py-1 rounded">Reject</button>
+                ` : ''}
+            </div>
+        </div>
+    `;
              
         <!-- ===== UUM Header ===== -->
         <div class="card" style="padding:18px; margin-bottom:0;">
