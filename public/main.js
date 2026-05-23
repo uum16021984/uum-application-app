@@ -183,12 +183,12 @@ function loadEvaluatePage() {
             <p><strong>Status:</strong> ${app.status}</p>
 
             <div class="mt-3">
-               <button onclick="approveApplication(${app.id})" 
+              <button onclick="adminApprove(${app.id})" 
     class="bg-green-600 text-white px-3 py-1 rounded mr-2">
     Approve
 </button>
 
-<button onclick="rejectApplication(${app.id})" 
+<button onclick="adminReject(${app.id})" 
     class="bg-red-600 text-white px-3 py-1 rounded">
     Reject
 </button>
