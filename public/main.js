@@ -1698,42 +1698,75 @@ async function deleteApplication(id) {
             currentApplicationId = null;
         }
 
-     // Real working Approve Application logic
+ // Standalone Bulletproof Approve Application Logic
 async function adminApprove(applicationId) {
     if (!confirm("Are you sure you want to APPROVE this application?")) return;
 
     try {
-        await api(`/applications/${applicationId}`, {
+        // Fetch standard headers with your app's authentication token
+        const token = typeof getToken === 'function' ? getToken() : localStorage.getItem('token');
+        
+        // Direct absolute browser network patch request 
+        const response = await fetch(`/applications/${applicationId}`, {
             method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token ? `Bearer ${token}` : ''
+            },
             body: JSON.stringify({ status: 'approved' })
         });
-        
+
+        if (!response.ok) throw new Error('Server returned an error status code');
+
+        // Refresh global application variables arrays
         await refreshAllData(); 
-        showToast('Application approved successfully!', 'success');
+        
+        if (typeof showToast === 'function') showToast('Application approved successfully!', 'success');
+        else alert('Application approved successfully!');
+        
+        // Clear card view and reload updated data list layout
         loadEvaluatePage();
     } catch (e) {
-        showToast(e.message || 'Failed to approve', 'error');
+        console.error(e);
+        if (typeof showToast === 'function') showToast('Failed to approve application', 'error');
+        else alert('Failed to approve application');
     }
 }
 
-// Real working Reject Application logic
+// Standalone Bulletproof Reject Application Logic
 async function adminReject(applicationId) {
     if (!confirm("Are you sure you want to REJECT this application?")) return;
 
     try {
-        await api(`/applications/${applicationId}`, {
+        // Fetch standard headers with your app's authentication token
+        const token = typeof getToken === 'function' ? getToken() : localStorage.getItem('token');
+        
+        // Direct absolute browser network patch request 
+        const response = await fetch(`/applications/${applicationId}`, {
             method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token ? `Bearer ${token}` : ''
+            },
             body: JSON.stringify({ status: 'rejected' })
         });
-        
+
+        if (!response.ok) throw new Error('Server returned an error status code');
+
+        // Refresh global application variables arrays
         await refreshAllData(); 
-        showToast('Application rejected successfully!', 'info');
+        
+        if (typeof showToast === 'function') showToast('Application rejected successfully!', 'info');
+        else alert('Application rejected successfully!');
+        
+        // Clear card view and reload updated data list layout
         loadEvaluatePage();
     } catch (e) {
-        showToast(e.message || 'Failed to reject', 'error');
+        console.error(e);
+        if (typeof showToast === 'function') showToast('Failed to reject application', 'error');
+        else alert('Failed to reject application');
     }
 }
-
         // Approve application (by Admin School)
         async function approveApplicationBySchool(applicationId) {
             try {
