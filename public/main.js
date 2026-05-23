@@ -1693,29 +1693,41 @@ async function deleteApplication(id) {
             currentApplicationId = null;
         }
 
-        // Approve application (by Admin JSM)
-        async function approveApplication(applicationId) {
-            try {
-                await apiPatchApplication(applicationId, { status: 'approved' });
-                closeApplicationDetailModal();
-                showToast('Application approved successfully!', 'success');
-                if (currentUser.role === 'adminJSM') loadAdminJSMDashboard();
-            } catch (e) {
-                showToast(e.message || 'Failed', 'error');
-            }
-        }
+     // Real working Approve Application logic
+async function adminApprove(applicationId) {
+    if (!confirm("Are you sure you want to APPROVE this application?")) return;
 
-        // Reject application (by Admin JSM)
-        async function rejectApplication(applicationId) {
-            try {
-                await apiPatchApplication(applicationId, { status: 'rejected' });
-                closeApplicationDetailModal();
-                showToast('Application rejected', 'info');
-                if (currentUser.role === 'adminJSM') loadAdminJSMDashboard();
-            } catch (e) {
-                showToast(e.message || 'Failed', 'error');
-            }
-        }
+    try {
+        await api(`/applications/${applicationId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'approved' })
+        });
+        
+        await refreshAllData(); 
+        showToast('Application approved successfully!', 'success');
+        loadEvaluatePage();
+    } catch (e) {
+        showToast(e.message || 'Failed to approve', 'error');
+    }
+}
+
+// Real working Reject Application logic
+async function adminReject(applicationId) {
+    if (!confirm("Are you sure you want to REJECT this application?")) return;
+
+    try {
+        await api(`/applications/${applicationId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'rejected' })
+        });
+        
+        await refreshAllData(); 
+        showToast('Application rejected successfully!', 'info');
+        loadEvaluatePage();
+    } catch (e) {
+        showToast(e.message || 'Failed to reject', 'error');
+    }
+}
 
         // Approve application (by Admin School)
         async function approveApplicationBySchool(applicationId) {
