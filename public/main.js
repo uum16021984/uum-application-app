@@ -183,15 +183,15 @@ function loadEvaluatePage() {
             <p><strong>Status:</strong> ${app.status}</p>
 
             <div class="mt-3">
-                <button onclick="adminApprove(${app.id})" 
-                    class="bg-green-600 text-white px-3 py-1 rounded mr-2">
-                    Approve
-                </button>
+               <button onclick="approveApplication(${app.id})" 
+    class="bg-green-600 text-white px-3 py-1 rounded mr-2">
+    Approve
+</button>
 
-                <button onclick="adminReject(${app.id})" 
-                    class="bg-red-600 text-white px-3 py-1 rounded">
-                    Reject
-                </button>
+<button onclick="rejectApplication(${app.id})" 
+    class="bg-red-600 text-white px-3 py-1 rounded">
+    Reject
+</button>
             </div>
         </div>
     `).join("");
@@ -1695,29 +1695,49 @@ async function deleteApplication(id) {
             currentApplicationId = null;
         }
 
-        // Approve application (by Admin JSM)
-        async function approveApplication(applicationId) {
-            try {
-                await apiPatchApplication(applicationId, { status: 'approved' });
-                closeApplicationDetailModal();
-                showToast('Application approved successfully!', 'success');
-                if (currentUser.role === 'adminJSM') loadAdminJSMDashboard();
-            } catch (e) {
-                showToast(e.message || 'Failed', 'error');
-            }
-        }
+       // Approve application (by Admin JSM)
+async function approveApplication(applicationId) {
+    if (!confirm("Are you sure you want to APPROVE this application?")) return;
 
-        // Reject application (by Admin JSM)
-        async function rejectApplication(applicationId) {
-            try {
-                await apiPatchApplication(applicationId, { status: 'rejected' });
-                closeApplicationDetailModal();
-                showToast('Application rejected', 'info');
-                if (currentUser.role === 'adminJSM') loadAdminJSMDashboard();
-            } catch (e) {
-                showToast(e.message || 'Failed', 'error');
-            }
+    try {
+        await apiPatchApplication(applicationId, { status: 'approved' });
+        await refreshAllData(); // <-- CRITICAL: Fetch updated data from database
+        
+        closeApplicationDetailModal();
+        showToast('Application approved successfully!', 'success');
+        
+        // Reload the correct view based on where the admin currently is
+        if (document.getElementById('pageTitle').textContent === 'Evaluate Applications') {
+            loadEvaluatePage();
+        } else if (currentUser.role === 'adminJSM') {
+            loadAdminJSMDashboard();
         }
+    } catch (e) {
+        showToast(e.message || 'Failed to approve', 'error');
+    }
+}
+
+// Reject application (by Admin JSM)
+async function rejectApplication(applicationId) {
+    if (!confirm("Are you sure you want to REJECT this application?")) return;
+
+    try {
+        await apiPatchApplication(applicationId, { status: 'rejected' });
+        await refreshAllData(); // <-- CRITICAL: Fetch updated data from database
+        
+        closeApplicationDetailModal();
+        showToast('Application rejected', 'info');
+        
+        // Reload the correct view based on where the admin currently is
+        if (document.getElementById('pageTitle').textContent === 'Evaluate Applications') {
+            loadEvaluatePage();
+        } else if (currentUser.role === 'adminJSM') {
+            loadAdminJSMDashboard();
+        }
+    } catch (e) {
+        showToast(e.message || 'Failed to reject', 'error');
+    }
+}
 
         // Approve application (by Admin School)
         async function approveApplicationBySchool(applicationId) {
