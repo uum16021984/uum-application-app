@@ -1699,37 +1699,43 @@ async function deleteApplication(id) {
         }
 
 async function adminApprove(appId) {
-  try {
-    // 1. Tell backend database to change the status
-    await apiPatchApplication(appId, { status: 'approved' });
-    
-    // 2. CRITICAL: Fetch the new dataset array into the frontend 
-    await refreshAllData();
-    
-    showToast('Permohonan DILULUSKAN!', 'success');
-    
-    // 3. Clear the old data view and render the fresh list
-    loadEvaluatePage();
-  } catch (e) {
-    showToast(e.message || 'Failed to approve', 'error');
-  }
+    try {
+        // 1. Tell backend database to change the status
+        await apiPatchApplication(appId, { status: 'approved' });
+        
+        // 2. NEW MODEL: Find the item in local memory and force the change manually
+        const index = applications.findIndex(a => String(a.id) === String(appId));
+        if (index !== -1) {
+            applications[index].status = 'approved';
+        }
+        
+        showToast('Permohonan DILULUSKAN!', 'success');
+        
+        // 3. Redraw the screen instantly
+        loadEvaluatePage();
+    } catch (e) {
+        showToast(e.message || 'Failed to approve', 'error');
+    }
 }
 
 async function adminReject(appId) {
-  try {
-    // 1. Tell backend database to change the status
-    await apiPatchApplication(appId, { status: 'rejected' });
-    
-    // 2. CRITICAL: Fetch the new dataset array into the frontend
-    await refreshAllData();
-    
-    showToast('Permohonan DITOLAK!', 'error');
-    
-    // 3. Clear the old data view and render the fresh list
-    loadEvaluatePage();
-  } catch (e) {
-    showToast(e.message || 'Failed to reject', 'error');
-  }
+    try {
+        // 1. Tell backend database to change the status
+        await apiPatchApplication(appId, { status: 'rejected' });
+        
+        // 2. NEW MODEL: Find the item in local memory and force the change manually
+        const index = applications.findIndex(a => String(a.id) === String(appId));
+        if (index !== -1) {
+            applications[index].status = 'rejected';
+        }
+        
+        showToast('Permohonan DITOLAK!', 'error');
+        
+        // 3. Redraw the screen instantly
+        loadEvaluatePage();
+    } catch (e) {
+        showToast(e.message || 'Failed to reject', 'error');
+    }
 }
         // Approve application (by Admin School)
         async function approveApplicationBySchool(applicationId) {
