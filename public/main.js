@@ -1,76 +1,26 @@
 // ============================================================
-// ADMIN JSM: EVALUATE PAGE – list all pending applications
+// ADMIN JSM: VIEW FULL FORM + APPROVE / REJECT + DOWNLOAD .docx
 // ============================================================
-function loadEvaluatePage() {
-    document.getElementById('pageTitle').textContent = 'Evaluate Applications';
+function openAdminViewForm(appId) {
+    const app = applications.find(a => String(a.id) === String(appId));
+    if (!app) { showToast('Application not found', 'error'); return; }
+
+    document.getElementById('pageTitle').textContent = 'Evaluate – ' + app.applicantName;
     const contentArea = document.getElementById('contentArea');
+    const d = app.details || {};
 
-    const pendingApps = applications.filter(app => app.status === 'pending');
-
-    if (pendingApps.length === 0) {
-        contentArea.innerHTML = `
-            <div class="card">
-                <p>No applications to evaluate.</p>
+    contentArea.innerHTML = `
+        <!-- Top action bar -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <button onclick="loadEvaluatePage()" style="background:#eee; border:1px solid #ccc; padding:6px 14px; border-radius:5px; cursor:pointer; font-size:13px;"><i class="fas fa-arrow-left mr-1"></i> Back</button>
+                <h2 style="color:#003087; margin:0; font-size:18px;">Full Application Form</h2>
             </div>
-        `;
-        return;
-    }
-
-    // FIXED: Added single quotes around '${app.id}' so the browser treats it as a string string literal
-    contentArea.innerHTML = pendingApps.map(app => `
-        <div class="card mb-4">
-            <h3 class="font-bold text-lg">${app.position}</h3>
-            <p><strong>Applicant:</strong> ${app.applicantName}</p>
-            <p><strong>Status:</strong> ${app.status}</p>
-
-            <div class="mt-3">
-                <button onclick="adminApprove('${app.id}')" 
-                    class="bg-green-600 text-white px-3 py-1 rounded mr-2">
-                    Approve
+                        <div style="display:flex; gap:8px;">
+                <button onclick="downloadApplicationWord(${app.id})" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">
+                    <i class="fas fa-file-word mr-1"></i> Download Word
                 </button>
-
-                <button onclick="adminReject('${app.id}')" 
-                    class="bg-red-600 text-white px-3 py-1 rounded">
-                    Reject
-                </button>
-            </div>
-        </div>
-    `).join("");
-}
-
-// Global scope window assignment using your app's native api() function
-window.adminApprove = async function(appId) {
-    if (!confirm("Adakah anda pasti untuk MELULUSKAN permohonan ini?")) return;
-    try {
-        // Uses your actual native api() utility with standard route layout
-        await api(`/applications/${appId}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ status: 'approved' })
-        });
-        
-        await refreshAllData(); // Pulls fresh data array down to application state memory
-        showToast('Permohonan DILULUSKAN!', 'success');
-        loadEvaluatePage(); // Re-renders table view list
-    } catch (e) {
-        showToast(e.message || 'Gagal meluluskan permohonan', 'error');
-    }
-};
-
-window.adminReject = async function(appId) {
-    if (!confirm("Adakah anda pasti untuk MENOLAK permohonan ini?")) return;
-    try {
-        await api(`/applications/${appId}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ status: 'rejected' })
-        });
-        
-        await refreshAllData();
-        showToast('Permohonan DITOLAK!', 'error');
-        loadEvaluatePage();
-    } catch (e) {
-        showToast(e.message || 'Gagal menolak permohonan', 'error');
-    }
-};
+			</div>
              
         <!-- ===== UUM Header ===== -->
         <div class="card" style="padding:18px; margin-bottom:0;">
@@ -1743,67 +1693,30 @@ async function deleteApplication(id) {
             currentApplicationId = null;
         }
 
-window.adminApprove = async function(appId) {
-    alert("[Tracer 1] Click detected! ID passed: " + appId);
-    try {
-        alert("[Tracer 2] Checking apiPatchApplication existence...");
-        if (typeof apiPatchApplication !== 'function') {
-            alert("[ERROR] apiPatchApplication is NOT defined as a function! Type is: " + typeof apiPatchApplication);
-            return;
+        // Approve application (by Admin JSM)
+        async function approveApplication(applicationId) {
+            try {
+                await apiPatchApplication(applicationId, { status: 'approved' });
+                closeApplicationDetailModal();
+                showToast('Application approved successfully!', 'success');
+                if (currentUser.role === 'adminJSM') loadAdminJSMDashboard();
+            } catch (e) {
+                showToast(e.message || 'Failed', 'error');
+            }
         }
 
-        alert("[Tracer 3] Sending network request to server...");
-        // This is where code usually stalls if Render's network/CORS configuration is blocking it
-        await apiPatchApplication(appId, { status: 'approved' });
-        
-        alert("[Tracer 4] Server responded successfully! Syncing memory state...");
-        if (typeof refreshAllData === 'function') {
-            await refreshAllData();
-        } else if (typeof applications !== 'undefined') {
-            const idx = applications.findIndex(a => String(a.id) === String(appId));
-            if (idx !== -1) applications[idx].status = 'approved';
+        // Reject application (by Admin JSM)
+        async function rejectApplication(applicationId) {
+            try {
+                await apiPatchApplication(applicationId, { status: 'rejected' });
+                closeApplicationDetailModal();
+                showToast('Application rejected', 'info');
+                if (currentUser.role === 'adminJSM') loadAdminJSMDashboard();
+            } catch (e) {
+                showToast(e.message || 'Failed', 'error');
+            }
         }
 
-        alert("[Tracer 5] Triggering UI Redraw via loadEvaluatePage()...");
-        loadEvaluatePage();
-        alert("[Tracer 6] Process Complete!");
-        
-    } catch (e) {
-        // If your showToast utility is crashing, this alert catches the raw server error instead
-        alert("[CRASH CAUGHT] Error Name: " + e.name + " | Message: " + e.message);
-        console.error("Full trace error:", e);
-    }
-};
-
-window.adminReject = async function(appId) {
-    alert("[Tracer 1] Click detected! ID passed: " + appId);
-    try {
-        alert("[Tracer 2] Checking apiPatchApplication existence...");
-        if (typeof apiPatchApplication !== 'function') {
-            alert("[ERROR] apiPatchApplication is NOT defined as a function!");
-            return;
-        }
-
-        alert("[Tracer 3] Sending network request to server...");
-        await apiPatchApplication(appId, { status: 'rejected' });
-        
-        alert("[Tracer 4] Server responded successfully! Syncing memory state...");
-        if (typeof refreshAllData === 'function') {
-            await refreshAllData();
-        } else if (typeof applications !== 'undefined') {
-            const idx = applications.findIndex(a => String(a.id) === String(appId));
-            if (idx !== -1) applications[idx].status = 'rejected';
-        }
-
-        alert("[Tracer 5] Triggering UI Redraw...");
-        loadEvaluatePage();
-        alert("[Tracer 6] Process Complete!");
-        
-    } catch (e) {
-        alert("[CRASH CAUGHT] Error Name: " + e.name + " | Message: " + e.message);
-        console.error("Full trace error:", e);
-    }
-};
         // Approve application (by Admin School)
         async function approveApplicationBySchool(applicationId) {
             try {
