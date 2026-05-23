@@ -9,23 +9,18 @@ function openAdminViewForm(appId) {
     const contentArea = document.getElementById('contentArea');
     const d = app.details || {};
 
-  contentArea.innerHTML = `
+    contentArea.innerHTML = `
+        <!-- Top action bar -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
             <div style="display:flex; align-items:center; gap:10px;">
                 <button onclick="loadEvaluatePage()" style="background:#eee; border:1px solid #ccc; padding:6px 14px; border-radius:5px; cursor:pointer; font-size:13px;"><i class="fas fa-arrow-left mr-1"></i> Back</button>
                 <h2 style="color:#003087; margin:0; font-size:18px;">Full Application Form</h2>
             </div>
-            <div style="display:flex; gap:8px;">
+                        <div style="display:flex; gap:8px;">
                 <button onclick="downloadApplicationWord(${app.id})" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">
                     <i class="fas fa-file-word mr-1"></i> Download Word
                 </button>
-                ${app.status === 'pending' ? `
-                    <button onclick="approveApplication(${app.id})" class="bg-green-600 text-white px-3 py-1 rounded">Approve</button>
-                    <button onclick="rejectApplication(${app.id})" class="bg-red-600 text-white px-3 py-1 rounded">Reject</button>
-                ` : ''}
-            </div>
-        </div>
-    `;
+			</div>
              
         <!-- ===== UUM Header ===== -->
         <div class="card" style="padding:18px; margin-bottom:0;">
@@ -65,8 +60,8 @@ function openAdminViewForm(appId) {
             <div style="background:#003087; color:white; padding:6px 12px; margin:-20px -20px 12px -20px; border-radius:8px 8px 0 0; font-size:12px; font-weight:600;">${sec}</div>
             <p style="color:#888; font-size:12px; font-style:italic;">– Data dari borang calon –</p>
   </div>`).join('')}`
-	} 
-  
+ }
+
 // adminApprove / adminReject — see admin.js (API)
 
 // ── Download application as .docx (Word) using Blob ──
@@ -186,15 +181,15 @@ function loadEvaluatePage() {
             <p><strong>Status:</strong> ${app.status}</p>
 
             <div class="mt-3">
-              <button onclick="adminApprove(${app.id})" 
-    class="bg-green-600 text-white px-3 py-1 rounded mr-2">
-    Approve
-</button>
+                <button onclick="adminApprove(${app.id})" 
+                    class="bg-green-600 text-white px-3 py-1 rounded mr-2">
+                    Approve
+                </button>
 
-<button onclick="adminReject(${app.id})" 
-    class="bg-red-600 text-white px-3 py-1 rounded">
-    Reject
-</button>
+                <button onclick="adminReject(${app.id})" 
+                    class="bg-red-600 text-white px-3 py-1 rounded">
+                    Reject
+                </button>
             </div>
         </div>
     `).join("");
@@ -1698,7 +1693,7 @@ async function deleteApplication(id) {
             currentApplicationId = null;
         }
 
-   // Approve application (by Admin JSM)
+        // Approve application (by Admin JSM)
         async function approveApplication(applicationId) {
             try {
                 await apiPatchApplication(applicationId, { status: 'approved' });
@@ -1721,6 +1716,7 @@ async function deleteApplication(id) {
                 showToast(e.message || 'Failed', 'error');
             }
         }
+
         // Approve application (by Admin School)
         async function approveApplicationBySchool(applicationId) {
             try {
