@@ -1698,36 +1698,39 @@ async function deleteApplication(id) {
             currentApplicationId = null;
         }
 
-// --- FORCE EXPORT TO GLOBAL SCOPE SO BUTTONS WORK ---
-window.adminApprove = async function(applicationId) {
-    if (!confirm("Are you sure you want to APPROVE this application?")) return;
-    try {
-        await api(`/applications/${applicationId}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ status: 'approved' })
-        });
-        await refreshAllData(); 
-        showToast('Application approved successfully!', 'success');
-        loadEvaluatePage();
-    } catch (e) {
-        showToast(e.message || 'Failed to approve', 'error');
-    }
-};
+async function adminApprove(appId) {
+  try {
+    // 1. Tell backend database to change the status
+    await apiPatchApplication(appId, { status: 'approved' });
+    
+    // 2. CRITICAL: Fetch the new dataset array into the frontend 
+    await refreshAllData();
+    
+    showToast('Permohonan DILULUSKAN!', 'success');
+    
+    // 3. Clear the old data view and render the fresh list
+    loadEvaluatePage();
+  } catch (e) {
+    showToast(e.message || 'Failed to approve', 'error');
+  }
+}
 
-window.adminReject = async function(applicationId) {
-    if (!confirm("Are you sure you want to REJECT this application?")) return;
-    try {
-        await api(`/applications/${applicationId}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ status: 'rejected' })
-        });
-        await refreshAllData(); 
-        showToast('Application rejected successfully!', 'info');
-        loadEvaluatePage();
-    } catch (e) {
-        showToast(e.message || 'Failed to reject', 'error');
-    }
-};
+async function adminReject(appId) {
+  try {
+    // 1. Tell backend database to change the status
+    await apiPatchApplication(appId, { status: 'rejected' });
+    
+    // 2. CRITICAL: Fetch the new dataset array into the frontend
+    await refreshAllData();
+    
+    showToast('Permohonan DITOLAK!', 'error');
+    
+    // 3. Clear the old data view and render the fresh list
+    loadEvaluatePage();
+  } catch (e) {
+    showToast(e.message || 'Failed to reject', 'error');
+  }
+}
         // Approve application (by Admin School)
         async function approveApplicationBySchool(applicationId) {
             try {
