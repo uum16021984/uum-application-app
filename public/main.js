@@ -21,7 +21,7 @@ function openAdminViewForm(appId) {
                     <i class="fas fa-file-word mr-1"></i> Download Word
                 </button>
 			</div>
-             
+            </div>
         <!-- ===== UUM Header ===== -->
         <div class="card" style="padding:18px; margin-bottom:0;">
             <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #003087; padding-bottom:12px; margin-bottom:12px;">
