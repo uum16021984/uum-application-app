@@ -54,13 +54,14 @@ function openAdminViewForm(appId) {
             </table>
         </div>
 
-        <!-- Sections B–L placeholder (read-only labels) -->
+               <!-- Sections B–L placeholder (read-only labels) -->
         ${['(B) MAKLUMAT PENGAJIAN PENDAH & MENENGAH','(C) MAKLUMAT PENGAJIAN TINGGI','(D) PENDAFTARAN PROFESIONAL','(E) PEMEGANG BIASISWA, PINJAMAN','(F) PEKERJAAN SEKARANG','(G) PENGALAMAN KERJA','(H) KEGIATAN KOKURIKULUM & SOSIAL','(I) PENERBITAN / PUBLICATION','(J) PENYELIDIKAN / RESEARCH','(K) PERAKUAN / REFERENCE','(L) PENGAKUAN PEMOHON / DECLARATION'].map(sec => `
         <div class="card" style="margin-top:12px;">
             <div style="background:#003087; color:white; padding:6px 12px; margin:-20px -20px 12px -20px; border-radius:8px 8px 0 0; font-size:12px; font-weight:600;">${sec}</div>
             <p style="color:#888; font-size:12px; font-style:italic;">– Data dari borang calon –</p>
-  </div>`).join('')}`
- }
+        </div>`).join('')}
+    `;
+}
 
 // adminApprove / adminReject — see admin.js (API)
 
