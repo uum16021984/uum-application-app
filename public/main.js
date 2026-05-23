@@ -1,31 +1,76 @@
 // ============================================================
-// ADMIN JSM: VIEW FULL FORM + APPROVE / REJECT + DOWNLOAD .docx
+// ADMIN JSM: EVALUATE PAGE – list all pending applications
 // ============================================================
-function openAdminViewForm(appId) {
-    const app = applications.find(a => String(a.id) === String(appId));
-    if (!app) { showToast('Application not found', 'error'); return; }
-
-    document.getElementById('pageTitle').textContent = 'Evaluate – ' + app.applicantName;
+function loadEvaluatePage() {
+    document.getElementById('pageTitle').textContent = 'Evaluate Applications';
     const contentArea = document.getElementById('contentArea');
-    const d = app.details || {};
 
-    contentArea.innerHTML = `
-        <!-- Top action bar -->
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <button onclick="loadEvaluatePage()" style="background:#eee; border:1px solid #ccc; padding:6px 14px; border-radius:5px; cursor:pointer; font-size:13px;"><i class="fas fa-arrow-left mr-1"></i> Back</button>
-                <h2 style="color:#003087; margin:0; font-size:18px;">Full Application Form</h2>
+    const pendingApps = applications.filter(app => app.status === 'pending');
+
+    if (pendingApps.length === 0) {
+        contentArea.innerHTML = `
+            <div class="card">
+                <p>No applications to evaluate.</p>
             </div>
-            <div style="display:flex; gap:8px;">
-                <button onclick="downloadApplicationWord(${app.id})" style="background:#28a745; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">
-                    <i class="fas fa-file-word mr-1"></i> Download Word
+        `;
+        return;
+    }
+
+    // FIXED: Added single quotes around '${app.id}' so the browser treats it as a string string literal
+    contentArea.innerHTML = pendingApps.map(app => `
+        <div class="card mb-4">
+            <h3 class="font-bold text-lg">${app.position}</h3>
+            <p><strong>Applicant:</strong> ${app.applicantName}</p>
+            <p><strong>Status:</strong> ${app.status}</p>
+
+            <div class="mt-3">
+                <button onclick="adminApprove('${app.id}')" 
+                    class="bg-green-600 text-white px-3 py-1 rounded mr-2">
+                    Approve
                 </button>
-                ${app.status === 'pending' ? `
-                    <button onclick="adminApprove(${app.id})" style="background:#218838; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">Approve</button>
-                    <button onclick="adminReject(${app.id})" style="background:#c82333; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-size:13px; font-weight:600;">Reject</button>
-                ` : ''}
+
+                <button onclick="adminReject('${app.id}')" 
+                    class="bg-red-600 text-white px-3 py-1 rounded">
+                    Reject
+                </button>
             </div>
         </div>
+    `).join("");
+}
+
+// Global scope window assignment using your app's native api() function
+window.adminApprove = async function(appId) {
+    if (!confirm("Adakah anda pasti untuk MELULUSKAN permohonan ini?")) return;
+    try {
+        // Uses your actual native api() utility with standard route layout
+        await api(`/applications/${appId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'approved' })
+        });
+        
+        await refreshAllData(); // Pulls fresh data array down to application state memory
+        showToast('Permohonan DILULUSKAN!', 'success');
+        loadEvaluatePage(); // Re-renders table view list
+    } catch (e) {
+        showToast(e.message || 'Gagal meluluskan permohonan', 'error');
+    }
+};
+
+window.adminReject = async function(appId) {
+    if (!confirm("Adakah anda pasti untuk MENOLAK permohonan ini?")) return;
+    try {
+        await api(`/applications/${appId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'rejected' })
+        });
+        
+        await refreshAllData();
+        showToast('Permohonan DITOLAK!', 'error');
+        loadEvaluatePage();
+    } catch (e) {
+        showToast(e.message || 'Gagal menolak permohonan', 'error');
+    }
+};
              
         <!-- ===== UUM Header ===== -->
         <div class="card" style="padding:18px; margin-bottom:0;">
