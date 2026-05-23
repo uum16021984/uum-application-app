@@ -63,7 +63,6 @@ function openAdminViewForm(appId) {
             <p style="color:#888; font-size:12px; font-style:italic;">– Data dari borang calon –</p>
   </div>`).join('')}`
 	} 
-	}
   
 // adminApprove / adminReject — see admin.js (API)
 
