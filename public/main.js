@@ -1629,7 +1629,7 @@ async function deleteApplication(id) {
       function viewApplicationDetail(applicationId) {
            const application = applications.find(a => String(a.id || a._id) === String(applicationId));
             currentApplicationId = applicationId;
-            
+	  }            
             if (!application) {
                 showToast('Application not found', 'error');
                 return;
