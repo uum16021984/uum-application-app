@@ -21,7 +21,7 @@ function openAdminViewForm(appId) {
                     <i class="fas fa-file-word mr-1"></i> Download Word
                 </button>
 			</div>
-            </div>
+             
         <!-- ===== UUM Header ===== -->
         <div class="card" style="padding:18px; margin-bottom:0;">
             <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #003087; padding-bottom:12px; margin-bottom:12px;">
@@ -54,14 +54,13 @@ function openAdminViewForm(appId) {
             </table>
         </div>
 
-               <!-- Sections B–L placeholder (read-only labels) -->
+        <!-- Sections B–L placeholder (read-only labels) -->
         ${['(B) MAKLUMAT PENGAJIAN PENDAH & MENENGAH','(C) MAKLUMAT PENGAJIAN TINGGI','(D) PENDAFTARAN PROFESIONAL','(E) PEMEGANG BIASISWA, PINJAMAN','(F) PEKERJAAN SEKARANG','(G) PENGALAMAN KERJA','(H) KEGIATAN KOKURIKULUM & SOSIAL','(I) PENERBITAN / PUBLICATION','(J) PENYELIDIKAN / RESEARCH','(K) PERAKUAN / REFERENCE','(L) PENGAKUAN PEMOHON / DECLARATION'].map(sec => `
         <div class="card" style="margin-top:12px;">
             <div style="background:#003087; color:white; padding:6px 12px; margin:-20px -20px 12px -20px; border-radius:8px 8px 0 0; font-size:12px; font-weight:600;">${sec}</div>
             <p style="color:#888; font-size:12px; font-style:italic;">– Data dari borang calon –</p>
-        </div>`).join('')}
-    `;
-}
+  </div>`).join('')}`
+ }
 
 // adminApprove / adminReject — see admin.js (API)
 
@@ -989,20 +988,21 @@ function loadMyApplications() {
             <td class="p-2">
                 <div class="flex gap-2">
 
-                <button onclick="viewApplicationDetail('${app.id}')"
-class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
-<i class="fas fa-eye"></i> View
-</button>
+                    <button onclick="viewApplicationDetail('${app.id}')"
+                    class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
+                    <i class="fas fa-eye"></i> View
+                    </button>
 
-<button onclick="editApplication('${app.id}')"
-class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
-<i class="fas fa-edit"></i> Edit
-</button>
+                    <button onclick="editApplication('${app.id}')"
+                    class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+                    <i class="fas fa-edit"></i> Edit
+                    </button>
 
-<button onclick="deleteApplication('${app.id}')"
-class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
-<i class="fas fa-trash"></i> Delete
-</button>
+                    <button onclick="deleteApplication('${app.id}')"
+                    class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                    <i class="fas fa-trash"></i> Delete
+                    </button>
+
                 </div>
             </td>
         </tr>
@@ -1527,10 +1527,10 @@ async function deleteApplication(id) {
                                 <button onclick="viewApplicationDetail('${app.id}')" class="text-blue-600 hover:text-blue-800 mr-2">
                                     <i class="fas fa-eye"></i> View
                                 </button>
-                                <button onclick="approveApplicationBySchool('${app.id}')" class="text-green-600 hover:text-green-800 mr-2">
+                                <button onclick="approveApplicationBySchool(${app.id})" class="text-green-600 hover:text-green-800 mr-2">
                                     <i class="fas fa-check"></i> Approve
                                 </button>
-                                <button onclick="rejectApplicationBySchool('${app.id}')" class="text-red-600 hover:text-red-800">
+                                <button onclick="rejectApplicationBySchool(${app.id})" class="text-red-600 hover:text-red-800">
                                     <i class="fas fa-times"></i> Reject
                                 </button>
                             </td>
@@ -1629,7 +1629,7 @@ async function deleteApplication(id) {
       function viewApplicationDetail(applicationId) {
            const application = applications.find(a => String(a.id || a._id) === String(applicationId));
             currentApplicationId = applicationId;
-	            
+            
             if (!application) {
                 showToast('Application not found', 'error');
                 return;
@@ -1638,19 +1638,19 @@ async function deleteApplication(id) {
             let actionButtons = '';
            if (false) {
                 actionButtons = `
-                    <button onclick="approveApplication('${application.id}')" class="btn-primary mr-2">
+                    <button onclick="approveApplication('${application._id}')" class="btn-primary mr-2">
                         <i class="fas fa-check mr-2"></i> Approve
                     </button>
-                    <button onclick="rejectApplication('${application.id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+                    <button onclick="rejectApplication('${application._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
                         <i class="fas fa-times mr-2"></i> Reject
                     </button>
                 `;
 		   } else if (false) {
                 actionButtons = `
-                    <button onclick="approveApplicationBySchool('${application.id}')" class="btn-primary mr-2">
+                    <button onclick="approveApplicationBySchool('${application._id}')" class="btn-primary mr-2">
                         <i class="fas fa-check mr-2"></i> Approve
                     </button>
-                    <button onclick="rejectApplicationBySchool('${application.id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+                    <button onclick="rejectApplicationBySchool('${application._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
                         <i class="fas fa-times mr-2"></i> Reject
                     </button>
                 `;
