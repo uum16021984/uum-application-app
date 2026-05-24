@@ -1241,10 +1241,10 @@ async function deleteApplication(id) {
                                 <i class="fas fa-eye"></i> View
                             </button>
                             ${app.status === 'pending' ? `
-                            <button onclick="approveApplication('${app.id}')" class="text-green-600 hover:text-green-800 mr-2">
+                            <button onclick="approveApplication(${app.id})" class="text-green-600 hover:text-green-800 mr-2">
                                 <i class="fas fa-check"></i> Approve
                             </button>
-                            <button onclick="rejectApplication('${app.id}')" class="text-red-600 hover:text-red-800">
+                            <button onclick="rejectApplication(${app.id})" class="text-red-600 hover:text-red-800">
                                 <i class="fas fa-times"></i> Reject
                             </button>
                             ` : ''}
