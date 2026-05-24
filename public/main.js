@@ -1237,7 +1237,7 @@ async function deleteApplication(id) {
                         <td>${app.dateApplied}</td>
                         <td><span class="status-badge ${statusClass}">${app.status}</span></td>
                         <td>
-                            <button onclick="viewApplicationDetail(${app.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                            <button onclick="viewApplicationDetail('${app.id}')" class="text-blue-600 hover:text-blue-800 mr-2">
                                 <i class="fas fa-eye"></i> View
                             </button>
                             ${app.status === 'pending' ? `
@@ -1347,7 +1347,7 @@ async function deleteApplication(id) {
                             <td>${app.dateApplied}</td>
                             <td><span class="status-badge ${statusClass}">${app.status}</span></td>
                             <td>
-                                <button onclick="viewApplicationDetail(${app.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <button onclick="viewApplicationDetail('${app.id}')" class="text-blue-600 hover:text-blue-800 mr-2">
                                     <i class="fas fa-eye"></i> View
                                 </button>
                                 <button onclick="downloadForm(${app.id})" class="text-green-600 hover:text-green-800">
@@ -1524,7 +1524,7 @@ async function deleteApplication(id) {
                             <td>${app.dateApplied}</td>
                             <td><span class="status-badge ${statusClass}">${app.status}</span></td>
                             <td>
-                                <button onclick="viewApplicationDetail(${app.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <button onclick="viewApplicationDetail('${app.id}')" class="text-blue-600 hover:text-blue-800 mr-2">
                                     <i class="fas fa-eye"></i> View
                                 </button>
                                 <button onclick="approveApplicationBySchool(${app.id})" class="text-green-600 hover:text-green-800 mr-2">
@@ -1627,7 +1627,7 @@ async function deleteApplication(id) {
 
         // View application detail
       function viewApplicationDetail(applicationId) {
-          const application = applications.find(a => String(a.id) === String(applicationId));
+          const const application = applications.find(a => String(a.id || a._id) === String(applicationId));
             currentApplicationId = applicationId;
             
             if (!application) {
@@ -1677,7 +1677,7 @@ async function deleteApplication(id) {
                 
                 <div class="flex justify-end">
                     ${actionButtons}
-                    <button onclick="downloadForm(${application.id})" class="ml-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+                    <button onclick="downloadForm('${application.id}')" class="ml-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
                         <i class="fas fa-download mr-2"></i> Download Form
                     </button>
                 </div>
