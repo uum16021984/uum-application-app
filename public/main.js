@@ -473,8 +473,11 @@ function openApplyFormPage(position, grade, school) {
     document.getElementById('displaySchool').textContent = school;
 
     // Set today's date for declaration
-    document.getElementById('declarationDate').valueAsDate = new Date();
+   const declarationDateField = document.getElementById('declarationDate');
 
+if (declarationDateField) {
+    declarationDateField.valueAsDate = new Date();
+}
     // Show the page
     document.getElementById('applyFormPage').style.display = 'block';
 
