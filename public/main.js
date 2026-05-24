@@ -1020,8 +1020,47 @@ function loadMyApplications() {
         </div>
     `;
 }
-function editApplication(_id) {
-    showToast('Open “Job Advertisements” and use Apply Now to complete the full form.', 'info');
+function editApplication(id) {
+
+    const app = applications.find(
+        a => String(a.id || a._id) === String(id)
+    );
+
+    if (!app) {
+        showToast("Application not found", "error");
+        return;
+    }
+
+    // Open the form page
+    openApplyFormPage(
+        app.position,
+        app.grade,
+        app.school
+    );
+
+    // Fill existing data
+    const d = app.details || {};
+
+    document.getElementById('fullName').value = app.applicantName || '';
+
+    document.getElementById('newIC').value = d.newIC || '';
+    document.getElementById('oldIC').value = d.oldIC || '';
+    document.getElementById('dob').value = d.dob || '';
+    document.getElementById('religion').value = d.religion || '';
+    document.getElementById('passportNo').value = d.passportNo || '';
+    document.getElementById('citizenship').value = d.citizenship || '';
+    document.getElementById('gender').value = d.gender || '';
+    document.getElementById('phone').value = d.phone || '';
+    document.getElementById('email').value = d.email || '';
+    document.getElementById('permAddress').value = d.permAddress || '';
+    document.getElementById('mailAddress').value = d.mailAddress || '';
+    document.getElementById('numChildren').value = d.numChildren || '';
+    document.getElementById('spouseName').value = d.spouseName || '';
+    document.getElementById('spouseEmployer').value = d.spouseEmployer || '';
+    document.getElementById('parentName').value = d.parentName || '';
+    document.getElementById('parentEmployer').value = d.parentEmployer || '';
+
+    showToast("Application loaded for editing", "success");
 }
 
 async function deleteApplication(id) {
