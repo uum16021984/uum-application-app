@@ -1627,7 +1627,7 @@ async function deleteApplication(id) {
 
         // View application detail
       function viewApplicationDetail(applicationId) {
-          const const application = applications.find(a => String(a.id || a._id) === String(applicationId));
+           const application = applications.find(a => String(a.id || a._id) === String(applicationId));
             currentApplicationId = applicationId;
             
             if (!application) {
