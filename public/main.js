@@ -989,21 +989,20 @@ function loadMyApplications() {
             <td class="p-2">
                 <div class="flex gap-2">
 
-                    <button onclick="viewApplicationDetail(${app.id})"
-                    class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
-                    <i class="fas fa-eye"></i> View
-                    </button>
+                <button onclick="viewApplicationDetail('${app.id}')"
+class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">
+<i class="fas fa-eye"></i> View
+</button>
 
-                    <button onclick="editApplication(${app.id})"
-                    class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
-                    <i class="fas fa-edit"></i> Edit
-                    </button>
+<button onclick="editApplication('${app.id}')"
+class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+<i class="fas fa-edit"></i> Edit
+</button>
 
-                    <button onclick="deleteApplication(${app.id})"
-                    class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
-                    <i class="fas fa-trash"></i> Delete
-                    </button>
-
+<button onclick="deleteApplication('${app.id}')"
+class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+<i class="fas fa-trash"></i> Delete
+</button>
                 </div>
             </td>
         </tr>
@@ -1628,7 +1627,7 @@ async function deleteApplication(id) {
 
         // View application detail
       function viewApplicationDetail(applicationId) {
-           const application = applications.find(a => String(a._id) === String(applicationId));
+          const application = applications.find(a => String(a.id) === String(applicationId));
             currentApplicationId = applicationId;
             
             if (!application) {
@@ -1639,19 +1638,19 @@ async function deleteApplication(id) {
             let actionButtons = '';
            if (false) {
                 actionButtons = `
-                    <button onclick="approveApplication('${application._id}')" class="btn-primary mr-2">
+                    <button onclick="approveApplication('${application.id}')" class="btn-primary mr-2">
                         <i class="fas fa-check mr-2"></i> Approve
                     </button>
-                    <button onclick="rejectApplication('${application._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+                    <button onclick="rejectApplication('${application.id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
                         <i class="fas fa-times mr-2"></i> Reject
                     </button>
                 `;
 		   } else if (false) {
                 actionButtons = `
-                    <button onclick="approveApplicationBySchool('${application._id}')" class="btn-primary mr-2">
+                    <button onclick="approveApplicationBySchool('${application.id}')" class="btn-primary mr-2">
                         <i class="fas fa-check mr-2"></i> Approve
                     </button>
-                    <button onclick="rejectApplicationBySchool('${application._id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+                    <button onclick="rejectApplicationBySchool('${application.id}')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
                         <i class="fas fa-times mr-2"></i> Reject
                     </button>
                 `;
