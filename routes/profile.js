@@ -1,1 +1,0 @@
-module.exports=require('express').Router().put('/',(req,res)=>res.send('profile updated'));
