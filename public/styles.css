@@ -1,0 +1,375 @@
+:root {
+            --primary-color: #003087;
+            --accent-color: #FFD700;
+            --dark-bg: #1a202c;
+            --light-bg: #f7fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .primary-bg {
+            background-color: var(--primary-color);
+        }
+
+        .accent-bg {
+            background-color: var(--accent-color);
+        }
+
+        .primary-text {
+            color: var(--primary-color);
+        }
+
+        .accent-text {
+            color: var(--accent-color);
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar-closed {
+            transform: translateX(-100%);
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-closed {
+                transform: translateX(0);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            padding: 40px 0;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            z-index: 100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background-color: #38a169;
+        }
+
+        .toast.error {
+            background-color: #e53e3e;
+        }
+
+        .toast.info {
+            background-color: #3182ce;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .dark-mode {
+            background-color: var(--dark-bg);
+            color: white;
+        }
+
+        .dark-mode .card {
+            background-color: #2d3748;
+            color: white;
+        }
+
+        .dark-mode .modal-content {
+            background-color: #2d3748;
+            color: white;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* card with no padding — for cards that lead with an image */
+        .card-flush {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-flush .card-body {
+            padding: 16px;
+        }
+
+        .card-flush img.card-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background-color: #002366;
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            border: 1px solid #cbd5e1;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-accent:hover {
+            background-color: #e6c200;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f7fafc;
+            font-weight: 600;
+            color: var(--primary-color);
+            vertical-align: middle;
+        }
+
+        .th-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        tr:hover {
+            background-color: #f7fafc;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background-color: #fef5e7;
+            color: #f39c12;
+        }
+
+        .status-approved {
+            background-color: #e6f7ef;
+            color: #38a169;
+        }
+
+        .status-rejected {
+            background-color: #fed7d7;
+            color: #e53e3e;
+        }
+        .status-draft {
+            background-color: #e9ecef;
+            color: #6c757d;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #002366 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .btn-hero {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-hero:hover {
+            background-color: #e6c200;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background-color 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: #f7fafc;
+        }
+
+        .notification-unread {
+            background-color: #edf2f7;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 40;
+        }
+
+        .job-ad {
+            border-left: 4px solid var(--accent-color);
+            transition: all 0.2s;
+        }
+
+        .job-ad:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== Mobile: application form ===== */
+        /* The form is built from many inline-styled "two fields side by side"
+           rows. On a phone they'd get too cramped, so stack them vertically.
+           Inline styles win specificity fights, so !important is needed here —
+           this is the standard/expected pattern for overriding them responsively. */
+        @media (max-width: 480px) {
+            .modal {
+                padding: 16px 0;
+            }
+
+            #applyFormPage div[style*="display:flex; gap:12px"],
+            #applyFormPage div[style*="display:flex; gap:24px"] {
+                flex-direction: column !important;
+            }
+
+            #applyFormPage > div {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+            }
+        }
